@@ -9,8 +9,8 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Lavender & Silver Academy Branding */
-    --background: 270 30% 98%;
-    --foreground: 240 10% 15%;
+    --background: 270 80% 20%;
+    --foreground: 270 20% 96%;
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 15%;

@@ -36,7 +36,9 @@ export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps)
         {open && (
           <div className="flex items-center gap-2">
             <GraduationCap className="w-6 h-6 text-sidebar-primary" />
-            <span className="font-bold text-sidebar-foreground">Academy</span>
+            <span className="font-bold text-sidebar-foreground text-sm leading-tight">
+              I Learn We Learn Academy
+            </span>
           </div>
         )}
         <SidebarTrigger />

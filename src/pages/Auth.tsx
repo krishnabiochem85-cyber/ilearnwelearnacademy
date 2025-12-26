@@ -67,16 +67,16 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
-      <Card className="w-full max-w-md shadow-xl border-2 border-primary/20">
+    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--background))] p-4">
+      <Card className="w-full max-w-md shadow-xl border-2 border-primary/40 bg-[hsl(var(--card))]">
         <CardHeader className="text-center space-y-2">
           <div className="flex justify-center mb-2">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
               <GraduationCap className="w-10 h-10 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-primary">Academy Admin</CardTitle>
-          <CardDescription>Sign in to manage your academy dashboard</CardDescription>
+          <CardTitle className="text-2xl font-bold text-primary">I Learn We Learn Academy</CardTitle>
+          <CardDescription>Sign in to your academy dashboard</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
