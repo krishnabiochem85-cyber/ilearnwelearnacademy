@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-export const ContactSection = () => {
+export const ContactSection = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
   const { toast } = useToast();
   const [contact, setContact] = useState({
     phone: "+1 (555) 123-4567",
@@ -28,7 +28,8 @@ export const ContactSection = () => {
           <Label>Phone Number</Label>
           <Input
             value={contact.phone}
-            onChange={(e) => setContact({ ...contact, phone: e.target.value })}
+            disabled={isReadOnly}
+            onChange={(e) => !isReadOnly && setContact({ ...contact, phone: e.target.value })}
           />
         </div>
         <div className="space-y-2">
@@ -36,17 +37,19 @@ export const ContactSection = () => {
           <Input
             type="email"
             value={contact.email}
-            onChange={(e) => setContact({ ...contact, email: e.target.value })}
+            disabled={isReadOnly}
+            onChange={(e) => !isReadOnly && setContact({ ...contact, email: e.target.value })}
           />
         </div>
         <div className="space-y-2">
           <Label>Physical Address</Label>
           <Input
             value={contact.address}
-            onChange={(e) => setContact({ ...contact, address: e.target.value })}
+            disabled={isReadOnly}
+            onChange={(e) => !isReadOnly && setContact({ ...contact, address: e.target.value })}
           />
         </div>
-        <Button onClick={handleSave}>Save Changes</Button>
+        {!isReadOnly && <Button onClick={handleSave}>Save Changes</Button>}
       </CardContent>
     </Card>
   );

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2 } from "lucide-react";
 
-export const EventsSection = () => {
+export const EventsSection = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
   const { toast } = useToast();
   const [events, setEvents] = useState([
     { title: "Annual Science Fair", category: "Curricular", description: "Student showcase of science projects" },
@@ -15,10 +15,12 @@ export const EventsSection = () => {
   ]);
 
   const addEvent = () => {
+    if (isReadOnly) return;
     setEvents([...events, { title: "", category: "Curricular", description: "" }]);
   };
 
   const removeEvent = (idx: number) => {
+    if (isReadOnly) return;
     setEvents(events.filter((_, i) => i !== idx));
   };
 
@@ -35,19 +37,23 @@ export const EventsSection = () => {
       <CardContent className="space-y-6">
         {events.map((event, idx) => (
           <div key={idx} className="space-y-3 p-4 border rounded-lg relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2"
-              onClick={() => removeEvent(idx)}
-            >
-              <Trash2 className="w-4 h-4 text-destructive" />
-            </Button>
+            {!isReadOnly && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2"
+                onClick={() => removeEvent(idx)}
+              >
+                <Trash2 className="w-4 h-4 text-destructive" />
+              </Button>
+            )}
             <div className="space-y-2">
               <Label>Event Title</Label>
               <Input
                 value={event.title}
+                disabled={isReadOnly}
                 onChange={(e) => {
+                  if (isReadOnly) return;
                   const updated = [...events];
                   updated[idx].title = e.target.value;
                   setEvents(updated);
@@ -59,7 +65,9 @@ export const EventsSection = () => {
               <select
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 value={event.category}
+                disabled={isReadOnly}
                 onChange={(e) => {
+                  if (isReadOnly) return;
                   const updated = [...events];
                   updated[idx].category = e.target.value;
                   setEvents(updated);
@@ -74,7 +82,9 @@ export const EventsSection = () => {
               <Textarea
                 value={event.description}
                 rows={2}
+                disabled={isReadOnly}
                 onChange={(e) => {
+                  if (isReadOnly) return;
                   const updated = [...events];
                   updated[idx].description = e.target.value;
                   setEvents(updated);
@@ -83,13 +93,15 @@ export const EventsSection = () => {
             </div>
           </div>
         ))}
-        <div className="flex gap-2">
-          <Button onClick={addEvent} variant="outline">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Event
-          </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
-        </div>
+        {!isReadOnly && (
+          <div className="flex gap-2">
+            <Button onClick={addEvent} variant="outline">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Event
+            </Button>
+            <Button onClick={handleSave}>Save Changes</Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

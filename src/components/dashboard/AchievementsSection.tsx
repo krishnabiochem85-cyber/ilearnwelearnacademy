@@ -17,7 +17,7 @@ type Achievement = {
   category: string | null;
 };
 
-export const AchievementsSection = () => {
+export const AchievementsSection = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
   const { toast } = useToast();
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,10 +37,12 @@ export const AchievementsSection = () => {
   };
 
   const addAchievement = () => {
+    if (isReadOnly) return;
     setAchievements([...achievements, { title: "", student_name: null, description: null, achievement_date: null, category: null }]);
   };
 
   const removeAchievement = async (idx: number) => {
+    if (isReadOnly) return;
     const ach = achievements[idx];
     if (ach.id) {
       const { error } = await supabase.from("achievements").delete().eq("id", ach.id);
@@ -53,6 +55,7 @@ export const AchievementsSection = () => {
   };
 
   const handleSave = async () => {
+    if (isReadOnly) return;
     for (const ach of achievements) {
       if (!ach.title.trim()) continue;
       if (ach.id) {
@@ -84,37 +87,89 @@ export const AchievementsSection = () => {
       <CardContent className="space-y-6">
         {achievements.map((ach, idx) => (
           <div key={idx} className="space-y-3 p-4 border rounded-lg relative">
-            <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeAchievement(idx)}>
-              <Trash2 className="w-4 h-4 text-destructive" />
-            </Button>
+            {!isReadOnly && (
+              <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeAchievement(idx)}>
+                <Trash2 className="w-4 h-4 text-destructive" />
+              </Button>
+            )}
             <div className="space-y-2">
               <Label>Achievement Title</Label>
-              <Input value={ach.title} onChange={(e) => { const u = [...achievements]; u[idx].title = e.target.value; setAchievements(u); }} />
+              <Input
+                value={ach.title}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...achievements];
+                  u[idx].title = e.target.value;
+                  setAchievements(u);
+                }}
+              />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Student Name</Label>
-                <Input value={ach.student_name || ""} onChange={(e) => { const u = [...achievements]; u[idx].student_name = e.target.value; setAchievements(u); }} />
+                <Input
+                  value={ach.student_name || ""}
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...achievements];
+                    u[idx].student_name = e.target.value;
+                    setAchievements(u);
+                  }}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Category</Label>
-                <Input value={ach.category || ""} placeholder="e.g. Academic, Sports" onChange={(e) => { const u = [...achievements]; u[idx].category = e.target.value; setAchievements(u); }} />
+                <Input
+                  value={ach.category || ""}
+                  placeholder="e.g. Academic, Sports"
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...achievements];
+                    u[idx].category = e.target.value;
+                    setAchievements(u);
+                  }}
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Description</Label>
-              <Textarea value={ach.description || ""} rows={2} onChange={(e) => { const u = [...achievements]; u[idx].description = e.target.value; setAchievements(u); }} />
+              <Textarea
+                value={ach.description || ""}
+                rows={2}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...achievements];
+                  u[idx].description = e.target.value;
+                  setAchievements(u);
+                }}
+              />
             </div>
             <div className="space-y-2">
               <Label>Achievement Date</Label>
-              <Input type="date" value={ach.achievement_date || ""} onChange={(e) => { const u = [...achievements]; u[idx].achievement_date = e.target.value; setAchievements(u); }} />
+              <Input
+                type="date"
+                value={ach.achievement_date || ""}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...achievements];
+                  u[idx].achievement_date = e.target.value;
+                  setAchievements(u);
+                }}
+              />
             </div>
           </div>
         ))}
-        <div className="flex gap-2">
-          <Button onClick={addAchievement} variant="outline"><Plus className="w-4 h-4 mr-2" />Add Achievement</Button>
-          <Button onClick={handleSave}>Save Changes</Button>
-        </div>
+        {!isReadOnly && (
+          <div className="flex gap-2">
+            <Button onClick={addAchievement} variant="outline"><Plus className="w-4 h-4 mr-2" />Add Achievement</Button>
+            <Button onClick={handleSave}>Save Changes</Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
