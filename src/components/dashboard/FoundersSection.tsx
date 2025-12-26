@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-export const FoundersSection = () => {
+export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
   const { toast } = useToast();
   const [founders, setFounders] = useState([
     { name: "Dr. Jane Smith", bio: "Founder & Principal with 20 years in education" },
@@ -30,7 +30,9 @@ export const FoundersSection = () => {
               <Label>Founder Name</Label>
               <Input
                 value={founder.name}
+                disabled={isReadOnly}
                 onChange={(e) => {
+                  if (isReadOnly) return;
                   const updated = [...founders];
                   updated[idx].name = e.target.value;
                   setFounders(updated);
@@ -42,7 +44,9 @@ export const FoundersSection = () => {
               <Textarea
                 value={founder.bio}
                 rows={3}
+                disabled={isReadOnly}
                 onChange={(e) => {
+                  if (isReadOnly) return;
                   const updated = [...founders];
                   updated[idx].bio = e.target.value;
                   setFounders(updated);
@@ -51,7 +55,7 @@ export const FoundersSection = () => {
             </div>
           </div>
         ))}
-        <Button onClick={handleSave}>Save Changes</Button>
+        {!isReadOnly && <Button onClick={handleSave}>Save Changes</Button>}
       </CardContent>
     </Card>
   );

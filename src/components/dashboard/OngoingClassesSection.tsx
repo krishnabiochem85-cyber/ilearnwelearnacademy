@@ -19,7 +19,7 @@ type OngoingClass = {
   schedule: string | null;
 };
 
-export const OngoingClassesSection = () => {
+export const OngoingClassesSection = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
   const { toast } = useToast();
   const [classes, setClasses] = useState<OngoingClass[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,10 +39,12 @@ export const OngoingClassesSection = () => {
   };
 
   const addClass = () => {
+    if (isReadOnly) return;
     setClasses([...classes, { title: "", description: null, level: null, instructor: null, start_date: null, end_date: null, schedule: null }]);
   };
 
   const removeClass = async (idx: number) => {
+    if (isReadOnly) return;
     const cls = classes[idx];
     if (cls.id) {
       const { error } = await supabase.from("ongoing_classes").delete().eq("id", cls.id);
@@ -55,6 +57,7 @@ export const OngoingClassesSection = () => {
   };
 
   const handleSave = async () => {
+    if (isReadOnly) return;
     for (const cls of classes) {
       if (!cls.title.trim()) continue;
       if (cls.id) {
@@ -86,47 +89,117 @@ export const OngoingClassesSection = () => {
       <CardContent className="space-y-6">
         {classes.map((cls, idx) => (
           <div key={idx} className="space-y-3 p-4 border rounded-lg relative">
-            <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeClass(idx)}>
-              <Trash2 className="w-4 h-4 text-destructive" />
-            </Button>
+            {!isReadOnly && (
+              <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeClass(idx)}>
+                <Trash2 className="w-4 h-4 text-destructive" />
+              </Button>
+            )}
             <div className="space-y-2">
               <Label>Class Title</Label>
-              <Input value={cls.title} onChange={(e) => { const u = [...classes]; u[idx].title = e.target.value; setClasses(u); }} />
+              <Input
+                value={cls.title}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...classes];
+                  u[idx].title = e.target.value;
+                  setClasses(u);
+                }}
+              />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Level</Label>
-                <Input value={cls.level || ""} onChange={(e) => { const u = [...classes]; u[idx].level = e.target.value; setClasses(u); }} />
+                <Input
+                  value={cls.level || ""}
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...classes];
+                    u[idx].level = e.target.value;
+                    setClasses(u);
+                  }}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Instructor</Label>
-                <Input value={cls.instructor || ""} onChange={(e) => { const u = [...classes]; u[idx].instructor = e.target.value; setClasses(u); }} />
+                <Input
+                  value={cls.instructor || ""}
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...classes];
+                    u[idx].instructor = e.target.value;
+                    setClasses(u);
+                  }}
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Description</Label>
-              <Textarea value={cls.description || ""} rows={2} onChange={(e) => { const u = [...classes]; u[idx].description = e.target.value; setClasses(u); }} />
+              <Textarea
+                value={cls.description || ""}
+                rows={2}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...classes];
+                  u[idx].description = e.target.value;
+                  setClasses(u);
+                }}
+              />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Start Date</Label>
-                <Input type="date" value={cls.start_date || ""} onChange={(e) => { const u = [...classes]; u[idx].start_date = e.target.value; setClasses(u); }} />
+                <Input
+                  type="date"
+                  value={cls.start_date || ""}
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...classes];
+                    u[idx].start_date = e.target.value;
+                    setClasses(u);
+                  }}
+                />
               </div>
               <div className="space-y-2">
                 <Label>End Date</Label>
-                <Input type="date" value={cls.end_date || ""} onChange={(e) => { const u = [...classes]; u[idx].end_date = e.target.value; setClasses(u); }} />
+                <Input
+                  type="date"
+                  value={cls.end_date || ""}
+                  disabled={isReadOnly}
+                  onChange={(e) => {
+                    if (isReadOnly) return;
+                    const u = [...classes];
+                    u[idx].end_date = e.target.value;
+                    setClasses(u);
+                  }}
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Schedule (e.g. Mon/Wed 10am-12pm)</Label>
-              <Input value={cls.schedule || ""} onChange={(e) => { const u = [...classes]; u[idx].schedule = e.target.value; setClasses(u); }} />
+              <Input
+                value={cls.schedule || ""}
+                disabled={isReadOnly}
+                onChange={(e) => {
+                  if (isReadOnly) return;
+                  const u = [...classes];
+                  u[idx].schedule = e.target.value;
+                  setClasses(u);
+                }}
+              />
             </div>
           </div>
         ))}
-        <div className="flex gap-2">
-          <Button onClick={addClass} variant="outline"><Plus className="w-4 h-4 mr-2" />Add Class</Button>
-          <Button onClick={handleSave}>Save Changes</Button>
-        </div>
+        {!isReadOnly && (
+          <div className="flex gap-2">
+            <Button onClick={addClass} variant="outline"><Plus className="w-4 h-4 mr-2" />Add Class</Button>
+            <Button onClick={handleSave}>Save Changes</Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

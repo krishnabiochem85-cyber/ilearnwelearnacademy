@@ -16,27 +16,44 @@ import { MapSection } from "@/components/dashboard/MapSection";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState<"admin" | "staff" | null>(null);
   const [activeSection, setActiveSection] = useState("founders");
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkAuthAndRole = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/auth");
-      } else {
-        setLoading(false);
+        return;
       }
+
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id)
+        .limit(1);
+
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      } else if (data && data.length > 0) {
+        setRole(data[0].role as "admin" | "staff");
+      } else {
+        toast({ title: "No role assigned", description: "Please contact an administrator to assign a role to your account.", variant: "destructive" });
+      }
+
+      setLoading(false);
     };
-    checkAuth();
+
+    checkAuthAndRole();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) navigate("/auth");
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -52,6 +69,8 @@ const Dashboard = () => {
     );
   }
 
+  const isAdmin = role === "admin";
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
@@ -66,12 +85,12 @@ const Dashboard = () => {
               </Button>
             </div>
 
-            {activeSection === "founders" && <FoundersSection />}
-            {activeSection === "courses" && <CoursesSection />}
-            {activeSection === "contact" && <ContactSection />}
-            {activeSection === "events" && <EventsSection />}
-            {activeSection === "ongoing" && <OngoingClassesSection />}
-            {activeSection === "achievements" && <AchievementsSection />}
+            {activeSection === "founders" && <FoundersSection isReadOnly={!isAdmin} />}
+            {activeSection === "courses" && <CoursesSection isReadOnly={!isAdmin} />}
+            {activeSection === "contact" && <ContactSection isReadOnly={!isAdmin} />}
+            {activeSection === "events" && <EventsSection isReadOnly={!isAdmin} />}
+            {activeSection === "ongoing" && <OngoingClassesSection isReadOnly={!isAdmin} />}
+            {activeSection === "achievements" && <AchievementsSection isReadOnly={!isAdmin} />}
             {activeSection === "map" && <MapSection />}
           </div>
         </main>
