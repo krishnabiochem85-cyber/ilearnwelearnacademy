@@ -81,13 +81,17 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-[hsl(var(--primary))]/90">
         <AppSidebar activeSection={activeSection} setActiveSection={setActiveSection} isAdmin={isAdmin} />
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 overflow-auto text-[hsl(var(--primary-foreground))]">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex justify-between items-center">
-              <h1 className="text-3xl font-bold text-foreground">Academy Dashboard</h1>
-              <Button variant="outline" onClick={handleSignOut}>
+              <h1 className="text-3xl font-bold text-[hsl(var(--primary-foreground))]">Academy Dashboard</h1>
+              <Button
+                variant="outline"
+                onClick={handleSignOut}
+                className="border-[hsl(var(--primary-foreground))]/60 text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary-foreground))]/10"
+              >
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </Button>
