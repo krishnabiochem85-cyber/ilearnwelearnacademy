@@ -36,28 +36,36 @@ export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }
   };
 
   return (
-    <Card>
-      <CardHeader className="space-y-3 bg-gradient-to-r from-primary/10 via-background to-secondary/10 border-b border-border/60">
-        <CardTitle className="text-2xl md:text-3xl font-semibold text-foreground">
+    <Card className="border border-border/70 bg-[hsl(var(--background))]">
+      <CardHeader className="space-y-3 bg-gradient-to-r from-primary/15 via-[hsl(var(--background))] to-secondary/20 border-b border-border/60">
+        <CardTitle className="text-2xl md:text-3xl font-semibold text-[hsl(var(--foreground))]">
           The Heart and Mind Behind Our Academy
         </CardTitle>
-        <CardDescription className="text-sm md:text-base text-muted-foreground max-w-3xl">
+        <CardDescription className="text-sm md:text-base text-[hsl(var(--muted-foreground))] max-w-3xl">
           At our academy, we believe that education is most powerful when it is led by passion and
           supported by a unified community. Our leadership team brings together subject-matter
           expertise, strategic innovation, and a deep, personal commitment to every student's
           success.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6 pt-6">
+      <CardContent className="space-y-8 pt-8">
         {isReadOnly ? (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-8">
             {founders.map((founder) => (
               <article
                 key={founder.name}
-                className="rounded-xl border border-border/70 bg-card/90 p-5 shadow-sm hover:shadow-md transition-shadow"
+                className="grid gap-6 md:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] items-start rounded-2xl border border-border/60 bg-[hsl(var(--card))]/90 p-6 md:p-8 shadow-sm animate-fade-in"
               >
-                <h3 className="text-lg font-semibold text-foreground mb-2">{founder.name}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                <div className="flex flex-col items-center text-center md:text-left gap-3">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-[hsl(var(--primary))/0.12] border border-[hsl(var(--primary))/0.5] shadow-sm flex items-center justify-center text-xs font-medium text-[hsl(var(--primary))]">
+                    Photo
+                    <span className="sr-only">Placeholder for {founder.name} photograph</span>
+                  </div>
+                  <h3 className="text-lg md:text-xl font-semibold text-[hsl(var(--foreground))]">
+                    {founder.name}
+                  </h3>
+                </div>
+                <p className="text-sm md:text-base leading-relaxed text-[hsl(var(--muted-foreground))] whitespace-pre-line">
                   {founder.bio}
                 </p>
               </article>
@@ -68,7 +76,7 @@ export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }
             {founders.map((founder, idx) => (
               <div
                 key={idx}
-                className="space-y-3 p-4 rounded-lg border border-border/70 bg-muted/40"
+                className="space-y-3 p-4 rounded-lg border border-border/60 bg-[hsl(var(--card))]"
               >
                 <div className="space-y-2">
                   <Label>Founder Name</Label>
