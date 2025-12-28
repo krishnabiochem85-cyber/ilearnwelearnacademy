@@ -20,14 +20,16 @@ const menuItems = [
   { id: "ongoing", title: "Ongoing Classes", icon: Clock },
   { id: "achievements", title: "Achievements", icon: Award },
   { id: "map", title: "Location Map", icon: MapPin },
+  { id: "people", title: "People & Roles", icon: Users },
 ];
 
 interface AppSidebarProps {
   activeSection: string;
   setActiveSection: (section: string) => void;
+  isAdmin: boolean;
 }
 
-export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps) {
+export function AppSidebar({ activeSection, setActiveSection, isAdmin }: AppSidebarProps) {
   const { open } = useSidebar();
 
   return (
@@ -48,17 +50,19 @@ export function AppSidebar({ activeSection, setActiveSection }: AppSidebarProps)
           <SidebarGroupLabel>Dashboard Sections</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
-                    onClick={() => setActiveSection(item.id)}
-                    isActive={activeSection === item.id}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    {open && <span>{item.title}</span>}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {menuItems
+                .filter((item) => (item.id === "people" ? isAdmin : true))
+                .map((item) => (
+                  <SidebarMenuItem key={item.id}>
+                    <SidebarMenuButton
+                      onClick={() => setActiveSection(item.id)}
+                      isActive={activeSection === item.id}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      {open && <span>{item.title}</span>}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
