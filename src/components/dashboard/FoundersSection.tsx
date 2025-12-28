@@ -54,18 +54,18 @@ export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }
             {founders.map((founder) => (
               <article
                 key={founder.name}
-                className="grid gap-6 md:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] items-start rounded-2xl border border-border/40 bg-[hsl(var(--card))] p-6 md:p-8 shadow-sm hover:shadow-lg hover-scale animate-fade-in"
+                className="grid gap-6 md:grid-cols-[minmax(0,0.6fr)_minmax(0,1.4fr)] items-start rounded-2xl border border-[hsl(var(--primary))]/60 bg-[hsl(var(--primary))]/90 p-6 md:p-8 shadow-sm hover:shadow-lg hover-scale animate-fade-in"
               >
                 <div className="flex flex-col items-center text-center md:text-left gap-3">
-                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-[hsl(var(--primary))]/15 border border-[hsl(var(--primary))]/60 shadow-md flex items-center justify-center text-xs font-semibold tracking-wide text-[hsl(var(--primary))]">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-[hsl(var(--primary-foreground))]/10 border border-[hsl(var(--primary-foreground))]/40 shadow-md flex items-center justify-center text-xs font-semibold tracking-wide text-[hsl(var(--primary-foreground))]">
                     Founder Photo
                     <span className="sr-only">Placeholder for {founder.name} photograph</span>
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[hsl(var(--foreground))]">
+                  <h3 className="text-lg md:text-xl font-semibold text-[hsl(var(--primary-foreground))]">
                     {founder.name}
                   </h3>
                 </div>
-                <p className="text-sm md:text-base leading-relaxed text-[hsl(var(--foreground))] whitespace-pre-line">
+                <p className="text-sm md:text-base leading-relaxed text-[hsl(var(--primary-foreground))] whitespace-pre-line">
                   {founder.bio}
                 </p>
               </article>
