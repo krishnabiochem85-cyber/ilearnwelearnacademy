@@ -13,6 +13,7 @@ import { EventsSection } from "@/components/dashboard/EventsSection";
 import { OngoingClassesSection } from "@/components/dashboard/OngoingClassesSection";
 import { AchievementsSection } from "@/components/dashboard/AchievementsSection";
 import { MapSection } from "@/components/dashboard/MapSection";
+import { PeopleRolesSection } from "@/components/dashboard/PeopleRolesSection";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -74,7 +75,7 @@ const Dashboard = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
-        <AppSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+        <AppSidebar activeSection={activeSection} setActiveSection={setActiveSection} isAdmin={isAdmin} />
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex justify-between items-center">
