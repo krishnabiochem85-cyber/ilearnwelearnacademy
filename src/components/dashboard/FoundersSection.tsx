@@ -27,7 +27,7 @@ export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }
     {
       name: "Ms. Keerthana | Director",
       bio:
-        "The Anchor & Support System. Ms. Keerthana is the vital support system that holds the collective mission together. She stands steadfastly by the leadership team's side, ensuring that the academy's operations are seamless and that the founders' vision is consistently realized. With a powerful belief in the philosophy that 'Together We Achieve', she serves as the anchor of the team, focusing on unity and long-term growth for the academy and its students.",
+        "The Anchor & Support System. Ms. Keerthana is the vital support system that holds the collective mission together. She stands steadfastly by the leadership team's side, ensuring that the academy's operations are seamless and that the founders' vision is consistently realized. With a powerful belief in the philosophy that \"Together We Achieve\", she serves as the anchor of the team, focusing on unity and long-term growth for the academy and its students.",
     },
   ]);
 
@@ -37,54 +37,67 @@ export const FoundersSection = ({ isReadOnly = false }: { isReadOnly?: boolean }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Founders Page</CardTitle>
-        <CardDescription>Manage information about the academy founders</CardDescription>
+      <CardHeader className="space-y-3 bg-gradient-to-r from-primary/10 via-background to-secondary/10 border-b border-border/60">
+        <CardTitle className="text-2xl md:text-3xl font-semibold text-foreground">
+          The Heart and Mind Behind Our Academy
+        </CardTitle>
+        <CardDescription className="text-sm md:text-base text-muted-foreground max-w-3xl">
+          At our academy, we believe that education is most powerful when it is led by passion and
+          supported by a unified community. Our leadership team brings together subject-matter
+          expertise, strategic innovation, and a deep, personal commitment to every student's
+          success.
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-3">
-          <h3 className="text-xl font-semibold text-foreground">
-            The Heart and Mind Behind Our Academy
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            At our academy, we believe that education is most powerful when it is led by passion and
-            supported by a unified community. Our leadership team brings together subject-matter
-            expertise, strategic innovation, and a deep, personal commitment to every student's
-            success.
-          </p>
-        </div>
-        {founders.map((founder, idx) => (
-          <div key={idx} className="space-y-3 p-4 border rounded-lg">
-            <div className="space-y-2">
-              <Label>Founder Name</Label>
-              <Input
-                value={founder.name}
-                disabled={isReadOnly}
-                onChange={(e) => {
-                  if (isReadOnly) return;
-                  const updated = [...founders];
-                  updated[idx].name = e.target.value;
-                  setFounders(updated);
-                }}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Bio</Label>
-              <Textarea
-                value={founder.bio}
-                rows={4}
-                disabled={isReadOnly}
-                onChange={(e) => {
-                  if (isReadOnly) return;
-                  const updated = [...founders];
-                  updated[idx].bio = e.target.value;
-                  setFounders(updated);
-                }}
-              />
-            </div>
+      <CardContent className="space-y-6 pt-6">
+        {isReadOnly ? (
+          <div className="grid gap-6 md:grid-cols-2">
+            {founders.map((founder) => (
+              <article
+                key={founder.name}
+                className="rounded-xl border border-border/70 bg-card/90 p-5 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <h3 className="text-lg font-semibold text-foreground mb-2">{founder.name}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                  {founder.bio}
+                </p>
+              </article>
+            ))}
           </div>
-        ))}
-        {!isReadOnly && <Button onClick={handleSave}>Save Changes</Button>}
+        ) : (
+          <div className="space-y-6">
+            {founders.map((founder, idx) => (
+              <div
+                key={idx}
+                className="space-y-3 p-4 rounded-lg border border-border/70 bg-muted/40"
+              >
+                <div className="space-y-2">
+                  <Label>Founder Name</Label>
+                  <Input
+                    value={founder.name}
+                    onChange={(e) => {
+                      const updated = [...founders];
+                      updated[idx].name = e.target.value;
+                      setFounders(updated);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Bio</Label>
+                  <Textarea
+                    value={founder.bio}
+                    rows={5}
+                    onChange={(e) => {
+                      const updated = [...founders];
+                      updated[idx].bio = e.target.value;
+                      setFounders(updated);
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+            <Button onClick={handleSave}>Save Changes</Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
