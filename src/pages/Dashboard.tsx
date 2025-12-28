@@ -30,6 +30,9 @@ const Dashboard = () => {
         return;
       }
 
+      // Ensure bootstrap admin role for the founder email
+      await supabase.rpc("ensure_bootstrap_admin");
+
       const { data, error } = await supabase
         .from("user_roles")
         .select("role")
@@ -41,7 +44,11 @@ const Dashboard = () => {
       } else if (data && data.length > 0) {
         setRole(data[0].role as "admin" | "staff");
       } else {
-        toast({ title: "No role assigned", description: "Please contact an administrator to assign a role to your account.", variant: "destructive" });
+        toast({
+          title: "No role assigned",
+          description: "Please contact an administrator to assign a role to your account.",
+          variant: "destructive",
+        });
       }
 
       setLoading(false);
