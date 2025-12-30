@@ -81,10 +81,10 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-[hsl(var(--primary))]/90">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-[hsl(var(--background))] via-[hsl(var(--primary))/8] to-[hsl(var(--primary))/16]">
         <AppSidebar activeSection={activeSection} setActiveSection={setActiveSection} isAdmin={isAdmin} />
         <main className="flex-1 p-6 overflow-auto text-[hsl(var(--primary-foreground))]">
-          <div className="max-w-7xl mx-auto space-y-6">
+          <div className="max-w-7xl mx-auto space-y-6 bg-gradient-to-br from-[hsl(var(--primary))/10] via-[hsl(var(--primary))/6] to-[hsl(var(--background))] rounded-3xl p-6 shadow-lg border border-[hsl(var(--primary))/15]">
             <div className="flex justify-between items-center">
               <h1 className="text-3xl font-bold text-[hsl(var(--primary-foreground))]">Academy Dashboard</h1>
               <Button
